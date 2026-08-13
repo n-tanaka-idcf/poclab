@@ -1,0 +1,77 @@
+{
+    "name": "infra/terraform",
+    "dockerComposeFile": [
+        "../../infra/compose.yml"
+    ],
+    "service": "terraform",
+    "runServices": [
+        "terraform"
+    ],
+    "containerEnv": {
+        "DEVCONTAINER_NAME": "infra/terraform",
+        "DEVCONTAINER_USER": "appuser",
+        "EDITOR": "nvim",
+        "GH_CONFIG_DIR": "/misc-volume/gh"
+    },
+    "remoteEnv": {
+        "AQUA_CONFIG": "${containerWorkspaceFolder}/${containerEnv:DEVCONTAINER_NAME}/aqua.yaml",
+        "HISTFILE": "/misc-volume/bash/.bash_history",
+        "PATH": "/home/${containerEnv:DEVCONTAINER_USER}/.local/share/aquaproj-aqua/bin:${containerEnv:PATH}"
+    },
+    "remoteUser": "appuser",
+    "workspaceFolder": "/workspaces",
+    "mounts": [
+        {
+            "type": "bind",
+            "source": "${localWorkspaceFolder}",
+            "target": "${containerWorkspaceFolder}"
+        },
+        {
+            "type": "volume",
+            "source": "misc-volume",
+            "target": "/misc-volume"
+        }
+    ],
+    "features": {
+        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+            "moby": false
+        },
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {},
+        "ghcr.io/devcontainers/features/sshd:1": {},
+        "ghcr.io/dhoeric/features/hadolint:1": {},
+        "ghcr.io/aquaproj/devcontainer-features/aqua-installer:0.1.7": {
+            "aqua_version": "v2.51.2"
+        }
+    },
+    "postCreateCommand": "bash -c '${containerWorkspaceFolder}/${DEVCONTAINER_NAME}/postCreateCommand.sh'",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                // Editor
+                "editor.formatOnSave": true,
+                // Files
+                "files.insertFinalNewline": true,
+                "files.trimFinalNewlines": true,
+                "files.trimTrailingWhitespace": true,
+                // Remote
+                "remote.autoForwardPorts": false,
+                // Workspace
+                "autoOpenWorkspace.enableAutoOpenAlwaysFirst": true
+            },
+            "extensions": [
+                // Claude Code
+                "anthropic.claude-code",
+                // Docker
+                "ms-azuretools.vscode-docker",
+                "exiasr.hadolint",
+                // Github Actions
+                "github.vscode-github-actions",
+                // Terraform
+                "hashicorp.terraform",
+                // Workspace
+                "zoma.vscode-auto-open-workspace"
+            ]
+        }
+    }
+}

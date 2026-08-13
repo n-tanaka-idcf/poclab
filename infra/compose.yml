@@ -1,0 +1,13 @@
+name: poclab-infra
+
+services:
+  terraform:
+    build:
+      context: ./terraform
+      target: development
+      args:
+        APPUSER_UID: ${APPUSER_UID}
+        APPUSER_GID: ${APPUSER_GID}
+    user: ${APPUSER_UID}:${APPUSER_GID}
+    volumes:
+      - ./terraform/:/app

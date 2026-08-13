@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/aquaproj/aqua/main/json-schema/aqua-yaml.json
+# aqua - Declarative CLI Version Manager
+# https://aquaproj.github.io/
+# checksum:
+#   enabled: true
+#   require_checksum: true
+#   supported_envs:
+#   - all
+registries:
+  - type: standard
+    ref: v4.551.0 # renovate: depName=aquaproj/aqua-registry
+packages:
+  - name: BurntSushi/ripgrep@15.2.0
+  - name: evilmartians/lefthook@v2.1.10
+  - name: go-task/task@v3.52.0
+  - name: hashicorp/terraform@v1.15.8
+  - name: neovim/neovim@v0.12.4
+  - name: terraform-linters/tflint@v0.64.0

@@ -1,0 +1,10 @@
+# Secrets
+if [ -f .envrc_common_secrets ]; then
+  source .envrc_common_secrets
+else
+  echo "Missing .envrc_common_secrets. Copy .envrc_common_secrets.example to .envrc_common_secrets and populate the required secret values." >&2
+  return 1
+fi
+
+# Task
+eval "$(task --completion bash)"

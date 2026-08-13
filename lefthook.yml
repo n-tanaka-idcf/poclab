@@ -1,0 +1,6 @@
+pre-commit:
+  parallel: false
+  jobs:
+    - name: terraform-ci
+      root: infra/terraform
+      run: task ci:run
