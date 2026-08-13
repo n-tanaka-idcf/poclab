@@ -1,0 +1,69 @@
+---
+name: run_devcontainer_ci
+
+on:
+  pull_request:
+    branches:
+      - "*"
+    paths:
+      - .github/workflows/run_devcontainer_ci.yaml
+      - .devcontainer/**
+      - infra/compose.yml
+      - infra/.env.example
+      # infra/terraform
+      - infra/terraform/.envrc*
+      - infra/terraform/aqua.yaml
+      - infra/terraform/Dockerfile
+      - infra/terraform/postCreateCommand.sh
+      - infra/terraform/Taskfile.yml
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    strategy:
+      matrix:
+        include:
+          - devcontainer: infra/terraform
+      fail-fast: false
+
+    name: Build devcontainer for ${{ matrix.devcontainer }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Show workflow run-time information
+        run: |
+          echo Workflow: ${{ github.workflow }}
+          echo Branch: ${{ github.ref }}
+          echo Tag: ${{ github.ref_name }}
+          echo Commit: ${{ github.sha }}
+
+      - name: Detect dotenv_dir and devcontainer_name
+        id: detect_target
+        run: |
+          dotenv_dir=$(echo ${{ matrix.devcontainer }} | cut -f1 -d'/')
+          devcontainer_name=$(echo ${{ matrix.devcontainer }} | cut -f2 -d'/')
+          echo "DOTENV_DIR=$dotenv_dir" >> "$GITHUB_OUTPUT"
+          echo "DEVCONTAINER_NAME=$devcontainer_name" >> "$GITHUB_OUTPUT"
+
+      - name: Create .env file
+        run: |
+          cat ${{ steps.detect_target.outputs.DOTENV_DIR }}/.env.example > ${{ steps.detect_target.outputs.DOTENV_DIR }}/.env
+
+      - name: Build and check devcontainer environment
+        uses: devcontainers/ci@v0.3
+        with:
+          configFile: .devcontainer/${{ steps.detect_target.outputs.DEVCONTAINER_NAME }}/devcontainer.json
+          push: never
+          runCmd: |
+            cd /workspaces/${{ matrix.devcontainer }}
+            task environment:check

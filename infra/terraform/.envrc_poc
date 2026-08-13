@@ -1,0 +1,3 @@
+. .envrc_common
+
+export TERRAFORM_TARGET_ENVIRONMENT=poc

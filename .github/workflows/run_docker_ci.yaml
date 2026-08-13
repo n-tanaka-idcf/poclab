@@ -1,0 +1,38 @@
+---
+name: run_docker_ci
+
+on:
+  pull_request:
+    branches:
+      - "*"
+    paths:
+      - .github/workflows/run_docker_ci.yaml
+      - "**/Dockerfile"
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Show workflow run-time information
+        run: |
+          echo Workflow: ${{ github.workflow }}
+          echo Branch: ${{ github.ref }}
+          echo Tag: ${{ github.ref_name }}
+          echo Commit: ${{ github.sha }}
+
+      - name: Lint files
+        uses: hadolint/hadolint-action@v3.3.0
+        with:
+          recursive: true
