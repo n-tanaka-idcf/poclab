@@ -72,7 +72,7 @@ git clone <this-repository-url>
 
 ### 環境変数用ファイルの用意
 
-- (apps|infra)/.env
+- infra/.env
   - コンテナビルド時の環境変数を設定してください。
 
 ```env
