@@ -5,7 +5,6 @@
 - 本レポジトリにあるファイルの開発と実行を行う環境を、[devcontainer](https://code.visualstudio.com/docs/devcontainers/containers)を使用して構築します。
   - 業務PC(VScode)から開発環境用VM(Linux/Docker)に接続し、 そのVMのコンテナ上に必要なコマンドやライブラリを自動セットアップします。
 - 現在devcontainerに対応しているディレクトリは、以下になります。
-  - `ansible`(Ansibleプレイブック)
   - `terraform`(Terraformコード)
 
 ## 手順
