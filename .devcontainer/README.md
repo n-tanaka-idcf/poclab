@@ -62,7 +62,7 @@ git config --global user.email <username>@idcf.jp
 - 本レポジトリを開発環境用VMの任意の場所にクローンしてください。
 
 ```console
-git clone git@github.com/idcf-private/virtual-distributed-switch.git
+git clone <this-repository-url>
 ```
 
 ### VScodeで開発環境用VM上のレポジトリを開く
